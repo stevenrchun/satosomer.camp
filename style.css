@@ -121,6 +121,8 @@ body {
 .nav-icon {
   width: 65px;
   filter: invert(100);
+  /* To address chrome rendering bug for small SVGs */
+  opacity: 0.99;
 }
 
 .hero-container {
