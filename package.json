@@ -12,6 +12,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@11ty/eleventy": "^3.1.0"
+    "@11ty/eleventy": "^3.1.0",
+    "pixi.js": "^8.9.2"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
   }
 }

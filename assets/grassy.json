@@ -1,0 +1,35 @@
+{ "frames": {
+   "grassy (Sky).aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 320, "h": 180 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 320, "h": 180 },
+    "sourceSize": { "w": 320, "h": 180 },
+    "duration": 100
+   },
+   "grassy (Grass).aseprite": {
+    "frame": { "x": 0, "y": 180, "w": 320, "h": 180 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 320, "h": 180 },
+    "sourceSize": { "w": 320, "h": 180 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.13-arm64",
+  "image": "grassy.png",
+  "format": "I8",
+  "size": { "w": 320, "h": 360 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Sky", "opacity": 255, "blendMode": "normal" },
+   { "name": "Grass", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
