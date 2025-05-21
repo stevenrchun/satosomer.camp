@@ -29,7 +29,7 @@ import {
   const PIXEL_TEXTURE_WIDTH = 320;
   const PIXEL_TEXTURE_HEIGHT = 180;
   const FOREGROUND_LAYER_FACTOR = 1;
-  const SKY_LAYER_FACTOR = 0.2;
+  const SKY_LAYER_FACTOR = 0.05;
 
   // Append the application canvas to the document body
   container.appendChild(app.canvas);

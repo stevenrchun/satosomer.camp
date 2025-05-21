@@ -281,11 +281,9 @@ body {
 #stage {
   position: sticky;
   top: 0px;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
-  /* width: 320px; */
-  /* height: 180px; */
+  min-width: 100vw;
+  height: 100vh;
+  /* aspect-ratio: 16 / 9; */
 }
 
 .scroll-buffer {
@@ -317,6 +315,17 @@ body {
 
   .navbar a {
     font-size: 18px;
+  }
+
+  .transition {
+    position: sticky;
+    top: -80vh;
+  }
+  #stage {
+    position: sticky;
+    top: 20vh;
+    min-width: 100vw;
+    height: 80vh;
   }
 
 }
