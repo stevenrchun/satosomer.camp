@@ -8,50 +8,62 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=National+Park:wght@200..800&family=Quattrocento+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Quattrocento:wght@400;700&family=Yeseva+One&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <link rel="canonical" href="https://satosomer.camp/">
   </head>
   <body>
-    <main>
-      <div class="background-wrapper">
-        <div class="navbar national-park-semibold">
-          <div class="mobile-navbar-segment">
-            <a href="/itinerary">ITINERARY</a>
-            <a href="/travel">TRAVEL</a>
-          </div>
-          <img class="nav-icon" src="/assets/forest.svg">
-          <div class="mobile-navbar-segment">
-            <a href="/lodging">LODGING</a>
-            <a href="/packing">PACKING LIST</a>
-          </div>
-        </div>
-        <div class="hero-container">
-          <h1 class="hero-txt-mobile-top hero-txt yeseva-one">
-            Ben and Rachel
-          </h1>
-          <div class="hero-img-container">
-            <img class="hero-img" src="/assets/hero.png">
-            <img class="hero-img-mobile" src="/assets/hero-mobile.JPG">
-          </div>
-          <h1 class="hero-txt-mobile-bottom hero-txt yeseva-one">
-            are having a wedding!
-          </h1>
-          <div class="hero-txt-container">
-            <h1 class="hero-txt-main hero-txt yeseva-one">
-              Ben and Rachel are having a wedding!
-            </h1>
-          </div>
-        </div>
-        <div class="signpost-container">
-          <h2 class="signpost national-park-semibold">
-            ORIENTATION THIS WAY
-          </h2>
-          <h2 class="down-arrow national-park-semibold">
-             &darr;
-          </h2>
-        </div>
+    <script src="https://pixijs.download/release/pixi.min.js"></script>
+<main>
+  <div id="preamble" class="background-wrapper">
+    <div class="navbar national-park-semibold ">
+  <div class="mobile-navbar-segment">
+    <a href="/itinerary">ITINERARY</a>
+    <a href="/travel">TRAVEL</a>
+  </div>
+  <img class="nav-icon" src="/assets/forest.svg">
+  <div class="mobile-navbar-segment">
+    <a href="/lodging">LODGING</a>
+    <a href="/packing">PACKING LIST</a>
+  </div>
+</div>
+
+    <div class="hero-container">
+      <h1 class="hero-txt-mobile-top hero-txt yeseva-one">
+        Ben and Rachel
+      </h1>
+      <div class="hero-img-container">
+        <img class="hero-img" src="/assets/hero.png">
+        <img class="hero-img-mobile" src="/assets/hero-mobile.JPG">
       </div>
-    </main>
+      <h1 class="hero-txt-mobile-bottom hero-txt yeseva-one">
+        are having a wedding!
+      </h1>
+      <div class="hero-txt-container">
+        <h1 class="hero-txt-main hero-txt yeseva-one">
+          Ben and Rachel are having a wedding!
+        </h1>
+      </div>
+    </div>
+    <div class="signpost-container">
+      <h2 class="signpost national-park-semibold">
+        ORIENTATION THIS WAY
+      </h2>
+      <h2 class="down-arrow national-park-semibold">
+         &darr;
+      </h2>
+    </div>
+  </div>
+  <div class="transition">
+  </div>
+  <div id="stage">
+  </div>
+  <div class="scroll-buffer">
+  </div>
+</main>
+
+<script type="module" src="/assets/bundle.js"></script>
+
+
   </body>
 </html>
