@@ -7,7 +7,7 @@ export default defineConfig({
     assetsDir: "", // otherwise will write to assets/assets
     emptyOutDir: false,
     rollupOptions: {
-      input: "./src/script.js",
+      input: ["./src/script.js", "./src/assets.js"],
       output: {
         entryFileNames: "bundle.js",
       },

@@ -31,7 +31,7 @@ layout: main.liquid
       </h2>
     </div>
   </div>
-  <div class="transition">
+  <div id="transition-id" class="transition">
   </div>
   <div id="stage">
   </div>
@@ -39,6 +39,7 @@ layout: main.liquid
   </div>
 </main>
 {% if eleventy.env.runMode == "serve" %}
+<script type="module" src="http://localhost:5173/src/assets.js"></script>
 <script type="module" src="http://localhost:5173/src/script.js"></script>
 {% else %}
 <script type="module" src="/assets/bundle.js"></script>

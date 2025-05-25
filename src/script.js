@@ -6,6 +6,13 @@ import {
   TilingSprite,
   SCALE_MODES,
 } from "pixi.js";
+import {
+  getScaledBackgroundSprite,
+  getScaledSprite,
+  getScaledAnimatedSprite,
+  loadBackground,
+  loadCharacters,
+} from "./assets.js";
 
 (async () => {
   // Create a new application
@@ -26,68 +33,52 @@ import {
   console.log("Device Pixel Ratio:", window.devicePixelRatio);
   console.log("PixiJS Renderer Resolution:", app.renderer.resolution);
 
-  const PIXEL_TEXTURE_WIDTH = 320;
-  const PIXEL_TEXTURE_HEIGHT = 180;
   const FOREGROUND_LAYER_FACTOR = 1;
   const SKY_LAYER_FACTOR = 0.05;
+  const CHARACTER_ANIMATION_SPEED = 0.2;
 
   // Append the application canvas to the document body
   container.appendChild(app.canvas);
 
   // Load the bunny texture
   const texture = await Assets.load("https://pixijs.com/assets/bunny.png");
-  const sheet = await Assets.load("/assets/grassy.json");
-  // Set scale mode to nearest to ensure sharp pixels.
-  sheet.textures["grassy (Grass).aseprite"].baseTexture.scaleMode =
-    SCALE_MODES.NEAREST;
-  sheet.textures["grassy (Sky).aseprite"].baseTexture.scaleMode =
-    SCALE_MODES.NEAREST;
-
-  function calculatePixelScale(screenWidth, screenHeight) {
-    // Calculate the scale needed to make the texture fill the width.
-    const scaleX = screenWidth / PIXEL_TEXTURE_WIDTH;
-    // Calculate the scale needed to make the texture fill the height.
-    const scaleY = screenHeight / PIXEL_TEXTURE_HEIGHT;
-    // We want a uniform integer scale to maintain the pixel art look.
-    // Math.ceil(Math.max(scaleX, scaleY)) ensures the scaled tile is always
-    // large enough to cover the screen in both dimensions, and it's an integer.
-    return Math.max(1, Math.ceil(Math.max(scaleX, scaleY)));
-  }
+  const sheet = await loadBackground();
+  const rachel_idle_texture = await loadCharacters("/assets/rachel_idle.json");
+  const rachel_walk_texture = await loadCharacters("/assets/rachel_walk.json");
+  const rachelAnimations = {
+    idle: rachel_idle_texture,
+    walking: rachel_walk_texture,
+  };
 
   // Create a bunny Sprite
   const bunny = new Sprite(texture);
-  const foreground = new TilingSprite({
-    texture: sheet.textures["grassy (Grass).aseprite"],
-    width: app.screen.width,
-    height: app.screen.height,
-  });
-  const sky = new TilingSprite({
-    texture: sheet.textures["grassy (Sky).aseprite"],
-    width: app.screen.width,
-    height: app.screen.height,
-  });
-  let currentPixelScale = calculatePixelScale(
-    app.screen.width,
-    app.screen.height,
+  // Just using the initial texture
+  const rachelSprite = getScaledAnimatedSprite(rachelAnimations.idle, app);
+
+  const foreground = getScaledBackgroundSprite(
+    sheet.textures["grassy (Grass).aseprite"],
+    app,
   );
-  console.log("scale");
-  console.log(currentPixelScale);
-  foreground.tileScale.set(currentPixelScale, currentPixelScale);
-  sky.tileScale.set(currentPixelScale, currentPixelScale);
+  const sky = getScaledBackgroundSprite(
+    sheet.textures["grassy (Sky).aseprite"],
+    app,
+  );
 
   // Layout
   // Center the sprite's anchor point
   bunny.anchor.set(0.5);
 
-  // Move the sprite to the center of the screen
+  // Set initial positions
   bunny.x = app.screen.width / 2;
   bunny.y = app.screen.height / 2;
+  rachelSprite.anchor.set(0, 1);
+  rachelSprite.y = app.screen.height * 0.9;
+  rachelSprite.x = app.screen.width * 0.1;
+  rachelSprite.animationSpeed = CHARACTER_ANIMATION_SPEED;
+  rachelSprite.play();
   console.log("Screen size");
   console.log(app.screen.width);
   console.log(app.screen.height);
-  console.log("Center is at");
-  console.log(app.screen.width / 2);
-  console.log(app.screen.height / 2);
 
   // Resize logic
   // --- Responsive Resizing Logic for PixiJS Elements ---
@@ -126,6 +117,8 @@ import {
     currentScrollY - preambleHeight > 0 ? currentScrollY - preambleHeight : 0;
   let scrollFraction = 0;
   let deltaY = 0;
+  let scrollStopTimeoutId = null;
+  let charactersAreWalking = false;
 
   console.log("Preamble height");
   console.log(preambleHeight);
@@ -133,6 +126,10 @@ import {
   function updateAnimation() {
     // Calculate scroll progress (0 to 1)
     deltaY = window.scrollY - currentScrollY;
+    // Scale the animation speed with deltaY
+    if (charactersAreWalking) {
+      rachelSprite.animationSpeed = Math.abs(deltaY) / 50;
+    }
     currentScrollY = window.scrollY;
     animationScrollY =
       currentScrollY - preambleHeight > 0 ? currentScrollY - preambleHeight : 0;
@@ -149,6 +146,24 @@ import {
     sky.tilePosition.x -= deltaY * SKY_LAYER_FACTOR;
   }
   window.addEventListener("scroll", () => {
+    clearTimeout(scrollStopTimeoutId);
+
+    if (!charactersAreWalking) {
+      // If not already walking, switch to walking animation
+      console.log("Scroll detected: Rachel starts walking.");
+      rachelSprite.textures = rachelAnimations.walking;
+      rachelSprite.play(); // Make sure animation is playing
+      charactersAreWalking = true;
+    }
+
+    scrollStopTimeoutId = setTimeout(() => {
+      console.log("Scroll stopped: Rachel goes idle.");
+      rachelSprite.textures = rachelAnimations.idle;
+      rachelSprite.animationSpeed = CHARACTER_ANIMATION_SPEED;
+      rachelSprite.play(); // Make sure animation is playing
+      charactersAreWalking = false;
+    }, 300);
+
     // Use requestAnimationFrame to ensure updates happen before the next repaint
     requestAnimationFrame(updateAnimation);
   });
@@ -157,6 +172,7 @@ import {
   app.stage.addChild(sky);
   app.stage.addChild(foreground);
   app.stage.addChild(bunny);
+  app.stage.addChild(rachelSprite);
 
   bunny.x;
 
