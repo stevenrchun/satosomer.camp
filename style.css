@@ -283,6 +283,7 @@ body {
   top: 0px;
   min-width: 100vw;
   height: 100vh;
+  pointer-events: none
   /* aspect-ratio: 16 / 9; */
 }
 
