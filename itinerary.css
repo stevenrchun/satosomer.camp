@@ -1,0 +1,99 @@
+.itinerary-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.itinerary-card {
+  /* Forces any absolute positioning to use this card */
+  position: relative;
+  color: black;
+  padding: 40px;
+  border-radius: 15px;
+  margin: 40px;
+  width: 40%;
+  background-color: #FFF4A4;
+  box-shadow: var(--shadow-elevation-medium);
+}
+
+/* Bottom left */
+.left-clip-container {
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+  width: 5%;
+  height: 10%;
+  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.8));
+}
+.left-clip {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #FFF4A4;
+  -webkit-clip-path: polygon(0 0, 100% 100%, 0% 100%);
+}
+.right-clip-container {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  width: 5%;
+  height: 10%;
+  filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 0.8));
+}
+.right-clip {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: #FFF4A4;
+  -webkit-clip-path: polygon(0 0, 100% 0%, 100% 100%);
+}
+
+.itinerary-1 {
+  width: 40%;
+  transform: rotate(2deg);
+  -webkit-clip-path: polygon(0 0, 0 90%, 5% 100%, 5% 110%, 110% 110%, 110% 10%, 100% 10%, 95% 0);
+}
+
+.pushpin {
+  position: absolute;
+  top: .5%;
+  left: 46%;
+  width: 8%;
+}
+
+.itinerary-3 {
+  width: 40%;
+  transform: rotate(-1deg);
+  -webkit-clip-path: polygon(0 0, 0 calc(100% - 50px), 50px 100%, 50px 110%, 110% 110%, 110% 50px, 100% 50px, calc(100% - 50px) 0);
+}
+.itinerary-3 .right-clip-container {
+  width: 50px;
+  height: 50px;
+}
+.itinerary-3 .left-clip-container {
+  width: 50px;
+  height: 50px;
+}
+
+.note-heading {
+  background-color: var(--text-offwhite-color);
+  background-color: white;
+  border-top: 3px solid;
+  border-top-color: var(--accent-color);
+  padding: 10px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: var(--shadow-elevation-low);
+  /* background-image: linear-gradient(90deg, transparent 5px, #3f3f3f4f 5px, #3f3f3f4f 7px, transparent 7px), */
+  /* linear-gradient(#3f3f3f4f .1em, transparent .1em); */
+  /* background-size: 100% 1.2em; */
+}
+
+
+.note-body {
+  padding: 10px;
+  background-image: linear-gradient(90deg, transparent 5px, #3f3f3f26 5px, #3f3f3f26 7px, transparent 7px),
+  linear-gradient(#3f3f3f26 .1em, transparent .1em);
+  background-size: 100% 1.1em;
+}
+

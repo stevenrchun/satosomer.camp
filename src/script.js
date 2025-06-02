@@ -33,8 +33,8 @@ import {
   console.log("Device Pixel Ratio:", window.devicePixelRatio);
   console.log("PixiJS Renderer Resolution:", app.renderer.resolution);
 
-  const FOREGROUND_LAYER_FACTOR = 1;
-  const SKY_LAYER_FACTOR = 0.05;
+  const FOREGROUND_LAYER_FACTOR = 0.5;
+  const SKY_LAYER_FACTOR = 0.02;
   const CHARACTER_ANIMATION_SPEED = 0.2;
 
   // Append the application canvas to the document body
@@ -128,7 +128,7 @@ import {
     deltaY = window.scrollY - currentScrollY;
     // Scale the animation speed with deltaY
     if (charactersAreWalking) {
-      rachelSprite.animationSpeed = Math.abs(deltaY) / 50;
+      rachelSprite.animationSpeed = Math.abs(deltaY) / 200;
     }
     currentScrollY = window.scrollY;
     animationScrollY =
@@ -162,7 +162,7 @@ import {
       rachelSprite.animationSpeed = CHARACTER_ANIMATION_SPEED;
       rachelSprite.play(); // Make sure animation is playing
       charactersAreWalking = false;
-    }, 300);
+    }, 150);
 
     // Use requestAnimationFrame to ensure updates happen before the next repaint
     requestAnimationFrame(updateAnimation);
