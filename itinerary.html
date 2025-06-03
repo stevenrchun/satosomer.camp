@@ -1,11 +1,12 @@
 ---
 layout: main.liquid
 ---
+<!-- Idea, a YOU ARE HERE indicator that moves according to Santa Cruz time -->
 <link rel="stylesheet" href="/itinerary.css">
 <div class="background-wrapper">
   {% render 'navbar' %}
   <div class="itinerary-container">
-    <div class="itinerary-1 itinerary-card">
+    <div class="itinerary-1 clipped itinerary-card">
       <div class="left-clip-container"><div class="left-clip"></div></div>
       <div class="note-heading national-park">
         <h1>
@@ -27,8 +28,8 @@ layout: main.liquid
       <div class="right-clip-container"><div class="right-clip"></div></div>
     </div>
     <!--note 2-->
-    <div class="itinerary-2 itinerary-card ">
-      <img class="pushpin" src="/assets/pushpin.webp">
+    <div class="itinerary-2 clipped itinerary-card ">
+      <div class="left-clip-container"><div class="left-clip"></div></div>
       <div class="note-heading national-park">
         <h1>
           Friday, October 10: Welcome Day
@@ -71,10 +72,11 @@ layout: main.liquid
           <li>S'Mores!</li>
         </ul>
       </div>
+      <div class="right-clip-container"><div class="right-clip"></div></div>
     </div>
     <!-- note 3 -->
     <div class="itinerary-3 itinerary-card ">
-      <div class="left-clip-container"><div class="left-clip"></div></div>
+      <img class="pushpin" src="/assets/pushpin.webp">
       <div class="note-heading national-park">
         <h1>
           Saturday, October 11: Wedding Bells
@@ -138,6 +140,32 @@ layout: main.liquid
         <h2>
           10PM - After Party
         </h2>
+      </div>
+    </div>
+    <!--note 4-->
+    <div class="itinerary-4 clipped itinerary-card ">
+      <div class="left-clip-container"><div class="left-clip"></div></div>
+      <div class="note-heading national-park">
+        <h1>
+          Sunday, October 12: Farewell, So Long
+        </h1>
+      </div>
+      <div class="note-body quattrocento-regular">
+        <h2>
+          8:00-10:00AM - Goodbye Brunch in the Lodge.
+        </h2>
+        <h2>
+          11:00AM - Guest checkout
+        </h2>
+        <ul>
+          <li>Staff available to help with luggage and transport.</li>
+        </ul>
+        <h2>
+          12:00PM - Newlyweds Depart!
+        </h2>
+        <ul>
+          <li>Staff will load bags and decor.</li>
+        </ul>
       </div>
       <div class="right-clip-container"><div class="right-clip"></div></div>
     </div>
