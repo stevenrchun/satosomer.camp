@@ -24,6 +24,7 @@
   image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
+  filter: drop-shadow(0 0 0.75rem hsl(10.09deg 93.22% 53.73%));
 }
 
 .lodging-posting {
