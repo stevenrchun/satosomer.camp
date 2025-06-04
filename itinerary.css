@@ -16,6 +16,7 @@
   width: 40%;
   background-color: #FFF4A4;
   box-shadow: var(--shadow-elevation-medium);
+  max-width: 576px;
 }
 
 /* Bottom left */
