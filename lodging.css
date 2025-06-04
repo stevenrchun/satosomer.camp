@@ -1,0 +1,73 @@
+.lodging-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 100px;
+}
+
+.gif-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  width: 600px;
+}
+
+.bunks-gif {
+  margin-bottom: 66px;
+}
+
+.gif {
+  width: 100%;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.lodging-posting {
+  border: 3px solid #6B4F4F; /* Muted dark brown border */
+  background-color: #FFF8DC; /* Cornsilk - a vintage paper color */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-elevation-medium);
+  color: #6B4F4F;
+  text-align: center;
+}
+
+.lodging-posting p {
+  padding: 20px;
+}
+
+.posting-header  {
+  padding: 5px;
+  background-color: #A0937D;
+  color: #FFF8DC;
+  border-bottom: 2px dashed #6B4F4F;
+}
+
+.kennolyn-map-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 30px;
+}
+
+.kennolyn-map {
+  border: 3px solid #6B4F4F; /* Muted dark brown border */
+  border-radius: 8px;
+  width: 80%;
+}
+
+@media only screen and (max-width: 620px) {
+  .gif-container {
+    width: 300px;
+    margin-bottom: 40px;
+  }
+
+  .lodging-container {
+    margin-bottom: 0;
+  }
+}
