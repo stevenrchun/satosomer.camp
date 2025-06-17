@@ -68,6 +68,12 @@ body {
   font-style: normal;
 }
 
+.quattrocento-italic {
+  font-family: "Quattrocento", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
 .quattrocento-bold {
   font-family: "Quattrocento", serif;
   font-weight: 700;
@@ -184,6 +190,8 @@ body {
   background-color: #287e34;
   background-image: url("/assets/noise-light.png");
   box-shadow: var(--shadow-elevation-medium);
+  border: 25px solid var(--accent-color);
+  min-height: calc(100vh - 50px);
 }
 
 /* Idea, this could maybe be like a projector screen that pulls up. */

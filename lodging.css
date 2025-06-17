@@ -62,13 +62,27 @@
   width: 80%;
 }
 
-@media only screen and (max-width: 620px) {
+
+/* Roughly the row break point */
+@media only screen and (max-width: 1200px) {
+  .bunks-gif {
+    margin: 0;
+  }
+  
   .gif-container {
-    width: 300px;
     margin-bottom: 40px;
   }
 
   .lodging-container {
     margin-bottom: 0;
   }
+
+
+}
+@media only screen and (max-width: 620px) {
+  .gif-container {
+    width: 300px;
+    margin-bottom: 40px;
+  }
+
 }
