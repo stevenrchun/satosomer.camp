@@ -1,4 +1,5 @@
 .lodging-container {
+  margin-top: 40px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -16,7 +17,8 @@
 }
 
 .bunks-gif {
-  margin-bottom: 66px;
+  margin-bottom: 33px;
+  margin-top: 33px;
 }
 
 .gif {
