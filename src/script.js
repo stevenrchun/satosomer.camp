@@ -14,8 +14,10 @@ import {
   getScaledBackgroundSprite,
   getScaledSprite,
   getScaledAnimatedSprite,
+  pixelDistance,
   loadBackground,
   loadCharacters,
+  getFrames,
   setScaleRelativeToViewHeightOrMaxWidth,
 } from "./assets.js";
 import { ParallaxSprite, ParallaxScene } from "./parallax.js";
@@ -92,47 +94,42 @@ function addSignpost(sprite, text, scaleY) {
   // app.renderer.resolution should match this value when autoDensity is true.
   console.log("Device Pixel Ratio:", window.devicePixelRatio);
   console.log("PixiJS Renderer Resolution:", app.renderer.resolution);
+  console.log("App.Screen.Height:", app.screen.height);
+  console.log("App.Screen.width:", app.screen.width);
 
   // Append the application canvas to the document body
   container.appendChild(app.canvas);
 
-  // Load textures
-  const rachel_idle_texture = await loadCharacters("/assets/rachel_idle.json");
-  const rachel_walk_texture = await loadCharacters("/assets/rachel_walk.json");
-  const ben_idle_texture = await loadCharacters("/assets/ben_idle.json");
-  const ben_walk_texture = await loadCharacters("/assets/ben_walk.json");
-  const sheet = await loadBackground();
-  const formal1 = await Assets.load("/assets/formal1.JPG");
-  const camp2 = new Sprite(await Assets.load("/assets/camp2.JPG"));
-  const bus3 = new Sprite(await Assets.load("/assets/bus3.JPG"));
-  const grad4 = new Sprite(await Assets.load("/assets/grad4.JPG"));
-  const grad5 = new Sprite(await Assets.load("/assets/grad5.JPG"));
-  const park6 = new Sprite(await Assets.load("/assets/park6.JPG"));
-  const hayes7 = new Sprite(await Assets.load("/assets/hayes7.JPG"));
-  const hayesformal8 = new Sprite(
-    await Assets.load("/assets/hayesformal8.JPG"),
-  );
-  const mattress9 = new Sprite(await Assets.load("/assets/mattress9.JPG"));
-  const pergola10 = new Sprite(await Assets.load("/assets/pergola10.JPG"));
-  const proposal11 = new Sprite(await Assets.load("/assets/proposal11.JPG"));
-  const goodbye11 = new Sprite(await Assets.load("/assets/goodbye11.JPG"));
-  const europe = new Sprite(await Assets.load("/assets/europe.JPG"));
-  const chicago_texture = await Assets.load("/assets/chicago.png");
-  const paintedLadiesTexture = await Assets.load("/assets/paintedladies.png");
-  const deering_texture = await Assets.load("/assets/deering.png");
-  const weber_texture = await Assets.load("/assets/weber.png");
-  const hayesHouseTexture = await Assets.load("/assets/958.png");
-  const eiffelSheet = await Assets.load("/assets/eiffel.json");
-  // Set scale mode to nearest to ensure sharp pixels.
-  eiffelSheet.textures["eiffel (Flattened).aseprite"].baseTexture.scaleMode =
-    SCALE_MODES.NEAREST;
-  eiffelSheet.textures["eiffel (tower).aseprite"].baseTexture.scaleMode =
-    SCALE_MODES.NEAREST;
-  chicago_texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-  deering_texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-  weber_texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-  paintedLadiesTexture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-  hayesHouseTexture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
+  // Load atlas
+  const atlas = await Assets.load("/assets/sprites-sheet.json");
+  // Set all assets to scale to nearest
+  // This might be bad for images idk
+  atlas._frameKeys.map((key) => {
+    atlas.textures[key].baseTexture.scaleMode = SCALE_MODES.NEAREST;
+  });
+
+  const rachel_idle_texture = getFrames(atlas, "rachel_idle");
+  const rachel_walk_texture = getFrames(atlas, "rachel_walk");
+  const ben_idle_texture = getFrames(atlas, "ben_idle");
+  const ben_walk_texture = getFrames(atlas, "ben_walk");
+  const formal1 = new Sprite(atlas.textures["formal1-0"]);
+  const camp2 = new Sprite(atlas.textures["camp2-0"]);
+  const bus3 = new Sprite(atlas.textures["bus3-0"]);
+  const grad4 = new Sprite(atlas.textures["ben_grad-0"]);
+  const grad5 = new Sprite(atlas.textures["rachel_grad-0"]);
+  const park6 = new Sprite(atlas.textures["park6-0"]);
+  const hayes7 = new Sprite(atlas.textures["hayes7-0"]);
+  const hayesformal8 = new Sprite(atlas.textures["hayesformal8-0"]);
+  const mattress9 = new Sprite(atlas.textures["mattress9-0"]);
+  const pergola10 = new Sprite(atlas.textures["pergola10-0"]);
+  const proposal11 = new Sprite(atlas.textures["proposal11-0"]);
+  const goodbye11 = new Sprite(atlas.textures["goodbye11-0"]);
+  const europe = new Sprite(atlas.textures["europe-0"]);
+  const chicago_texture = atlas.textures["chicago-0"];
+  const paintedLadiesTexture = atlas.textures["paintedladies-0"];
+  const deering_texture = atlas.textures["deering-0"];
+  const weber_texture = atlas.textures["weber-0"];
+  const hayesHouseTexture = atlas.textures["958-0"];
 
   // Make sprites
   const rachelAnimations = {
@@ -146,9 +143,8 @@ function addSignpost(sprite, text, scaleY) {
   const parallaxContainer = new ParallaxScene();
   const rachelSprite = getScaledAnimatedSprite(rachelAnimations.idle, app);
   const benSprite = getScaledAnimatedSprite(benAnimations.idle, app);
-  const formal1Sprite = new Sprite(formal1);
   const imgSprites = [
-    [formal1Sprite, "2017: Ben and Rachel meet at Northwestern (RIP La Mach)."],
+    [formal1, "2017: Ben and Rachel meet at Northwestern (RIP La Mach)."],
     [
       camp2,
       "They go on a few adventures (including Ben’s first camping trip).",
@@ -192,22 +188,11 @@ function addSignpost(sprite, text, scaleY) {
   const weber = getScaledSprite(weber_texture, app);
   const deering = getScaledSprite(deering_texture, app);
   const hayesHouse = getScaledSprite(hayesHouseTexture, app);
-  const tower = getScaledSprite(
-    eiffelSheet.textures["eiffel (tower).aseprite"],
-    app,
-  );
-  const eiffelBushes = getScaledSprite(
-    eiffelSheet.textures["eiffel (Flattened).aseprite"],
-    app,
-  );
-  const foreground = getScaledBackgroundSprite(
-    sheet.textures["grassy (Grass).aseprite"],
-    app,
-  );
-  const sky = getScaledBackgroundSprite(
-    sheet.textures["grassy (Sky).aseprite"],
-    app,
-  );
+  const tower = getScaledSprite(atlas.textures["eiffel-0"], app);
+  const eiffelBushes = getScaledSprite(atlas.textures["bushes-0"], app);
+  const foreground = getScaledBackgroundSprite(atlas.textures["grassy-0"], app);
+  const sky = getScaledBackgroundSprite(atlas.textures["sky-0"], app);
+  const perg = getScaledSprite(atlas.textures["perg-0"], app);
 
   // Layout
   // how far along x you have to be to be roughly in the right of the frame after the initial scrolling.
@@ -224,20 +209,25 @@ function addSignpost(sprite, text, scaleY) {
   // Set initial positions
   foreground.y = 30;
   chicago.y = -90;
-  chicago.x = INITIAL_SCROLL_OFFSET + 500;
+  chicago.x = INITIAL_SCROLL_OFFSET + pixelDistance(100, app);
   paintedLadies.y = -100;
-  paintedLadies.x = INITIAL_SCROLL_OFFSET + 3000;
+  paintedLadies.x = INITIAL_SCROLL_OFFSET + pixelDistance(600, app);
   weber.x = INITIAL_SCROLL_OFFSET;
   weber.y = app.screen.height * 0.45;
-  deering.x = INITIAL_SCROLL_OFFSET + 200;
+  deering.x = INITIAL_SCROLL_OFFSET + pixelDistance(40, app);
   deering.y = app.screen.height * 0.35;
   tower.y = -100;
   eiffelBushes.y = -110;
-  tower.x = INITIAL_SCROLL_OFFSET + 5200;
+  tower.x = INITIAL_SCROLL_OFFSET + pixelDistance(1060, app);
   eiffelBushes.x =
-    INITIAL_SCROLL_OFFSET + 5200 + (INITIAL_SCROLL_OFFSET + 5200) * 0.02 + 550;
-  hayesHouse.x = INITIAL_SCROLL_OFFSET + 6400;
-  hayesHouse.y = app.screen.height * 0.19;
+    INITIAL_SCROLL_OFFSET +
+    pixelDistance(1060, app) +
+    (INITIAL_SCROLL_OFFSET + pixelDistance(1060, app)) * 0.02 +
+    550;
+  hayesHouse.x = INITIAL_SCROLL_OFFSET + pixelDistance(1280, app);
+  hayesHouse.y = app.screen.height * 0.23;
+  perg.x = INITIAL_SCROLL_OFFSET + pixelDistance(1550, app);
+  perg.y = app.screen.height * 0.45;
 
   // Parallax Staging
   parallaxContainer.addParallaxChild(
@@ -261,6 +251,9 @@ function addSignpost(sprite, text, scaleY) {
   parallaxContainer.addParallaxChild(
     new ParallaxSprite(hayesHouse, CHICAGO_LAYER_FACTOR),
   );
+  parallaxContainer.addParallaxChild(
+    new ParallaxSprite(perg, CHICAGO_LAYER_FACTOR),
+  );
 
   const imgParallaxSprites = imgSprites.map((spriteAndLabel, index) => {
     let sprite = spriteAndLabel[0];
@@ -269,7 +262,7 @@ function addSignpost(sprite, text, scaleY) {
     // Split based on vert or horizontal photos.
     let scale = null;
     scale = setScaleRelativeToViewHeightOrMaxWidth(0.4, sprite, app);
-    sprite.x = (index + 1) * 900 + INITIAL_SCROLL_OFFSET;
+    sprite.x = (index + 1) * pixelDistance(180, app) + INITIAL_SCROLL_OFFSET;
     sprite.y = app.screen.height / 2.7;
 
     const parallaxSprite = new ParallaxSprite(sprite, IMAGE_LAYER_FACTOR);
@@ -282,13 +275,19 @@ function addSignpost(sprite, text, scaleY) {
   const CHARACTER_ANIMATION_SPEED = 0.2;
   rachelSprite.anchor.set(0, 1);
   rachelSprite.y = app.screen.height * 0.97;
-  rachelSprite.x = app.screen.width * 0.1;
+  rachelSprite.x = app.screen.width * 0.08;
+  if (app.screen.height > app.screen.width) {
+    rachelSprite.x = app.screen.width * 0.03;
+  }
   rachelSprite.animationSpeed = CHARACTER_ANIMATION_SPEED;
   rachelSprite.play();
 
   benSprite.anchor.set(0, 1);
   benSprite.y = app.screen.height * 0.95;
-  benSprite.x = app.screen.width * 0.15;
+  benSprite.x = app.screen.width * 0.12;
+  if (app.screen.height > app.screen.width) {
+    benSprite.x = app.screen.width * 0.2;
+  }
   benSprite.animationSpeed = CHARACTER_ANIMATION_SPEED - 0.05;
   benSprite.play();
 
@@ -351,10 +350,6 @@ function addSignpost(sprite, text, scaleY) {
       animationScrollY > 0 ? animationScrollY / animationScrollLength : 0;
 
     // If Ben has reached the last image, zero out any positive deltaYs.
-    console.log("ben: " + benSprite.getGlobalPosition().x);
-    console.log(
-      "last: " + imgParallaxSprites.slice(-1)[0].getGlobalPosition().x,
-    );
     // We must use global positions to compare.
     // if (
     //   benSprite.getGlobalPosition().x >=

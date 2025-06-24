@@ -39,6 +39,20 @@ function calculatePixelScale(
   return Math.max(1, Math.ceil(Math.max(scaleX, scaleY)));
 }
 
+export function pixelDistance(x, app) {
+  return x * calculatePixelScale(app.screen.width, app.screen.height);
+}
+
+export function getFrames(atlas, prefix) {
+  const frames = [];
+  for (const [frameName, texture] of Object.entries(atlas.textures)) {
+    if (frameName.startsWith(prefix)) {
+      frames.push(texture);
+    }
+  }
+  return frames;
+}
+
 export async function loadCharacters(path) {
   const sheet = await Assets.load(path);
   let textureArray = sheet._frameKeys.map((key) => {
@@ -77,8 +91,6 @@ export function getScaledSprite(texture, app) {
     app.screen.width,
     app.screen.height,
   );
-  console.log("current pixel scale");
-  console.log(currentPixelScale);
   sprite.scale.set(currentPixelScale, currentPixelScale);
   return sprite;
 }
