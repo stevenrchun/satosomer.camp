@@ -120,3 +120,4 @@ export function getScaledBackgroundSprite(texture, app) {
   sprite.tileScale.set(currentPixelScale, currentPixelScale);
   return sprite;
 }
+

@@ -2,9 +2,6 @@ import {
   Application,
   Assets,
   Sprite,
-  Spritesheet,
-  TilingSprite,
-  Point,
   SCALE_MODES,
   Graphics,
   Container,
@@ -15,8 +12,6 @@ import {
   getScaledSprite,
   getScaledAnimatedSprite,
   pixelDistance,
-  loadBackground,
-  loadCharacters,
   getFrames,
   setScaleRelativeToViewHeightOrMaxWidth,
 } from "./assets.js";
@@ -24,6 +19,87 @@ import { ParallaxSprite, ParallaxScene } from "./parallax.js";
 import { initDevtools } from "@pixi/devtools";
 
 const POST_WIDTH = 400;
+
+// Module-level variables for confetti management
+const confettiPieces = [];
+const confettiColors = [
+  0xff004d, 0xffa300, 0xffec27, 0x00e436, 0x29adff, 0x8337ff, 0xffffff,
+  0x000000,
+];
+let confettiTickerAdded = false;
+let shouldProduceConfetti = false; // Controls continuous production
+
+function createConfetti(app) {
+  const size = Math.random() * 15 + 5;
+  const color =
+    confettiColors[Math.floor(Math.random() * confettiColors.length)];
+
+  const confetti = new Graphics().rect(0, 0, size, size).fill(color);
+  confetti.zIndex = 100;
+
+  confetti.x = Math.random() * app.screen.width;
+  confetti.y = -size;
+  console.log("initial x " + confetti.x);
+  console.log("initial y " + confetti.y);
+
+  confetti.vx = (Math.random() - 0.5) * 2;
+  confetti.vy = Math.random() * 2 + 1;
+  confetti.rotationSpeed = (Math.random() - 0.5) * 0.1;
+
+  app.stage.addChild(confetti);
+  confettiPieces.push(confetti);
+}
+
+function startConfettiEffect(app) {
+  if (!confettiTickerAdded) {
+    console.log("starting");
+    app.ticker.add((ticker) => {
+      const gravity = 0.05;
+      const wind =
+        Math.sin(app.ticker.lastTime * 0.001) * 0.01 +
+        (Math.random() - 0.5) * 0.02;
+
+      for (let i = confettiPieces.length - 1; i >= 0; i--) {
+        const confetti = confettiPieces[i];
+
+        confetti.vy += gravity * ticker.deltaTime;
+        confetti.vx += wind * ticker.deltaTime;
+
+        confetti.x += confetti.vx * ticker.deltaTime;
+        confetti.y += confetti.vy * ticker.deltaTime;
+        console.log("delta" + ticker.deltaTime);
+        console.log(confetti.x);
+        console.log(confetti.y);
+
+        confetti.rotation += confetti.rotationSpeed * ticker.deltaTime;
+
+        if (
+          confetti.y > app.screen.height + 10 ||
+          confetti.x < -10 ||
+          confetti.x > app.screen.width + 10
+        ) {
+          app.stage.removeChild(confetti);
+          confetti.destroy();
+          confettiPieces.splice(i, 1);
+        }
+      }
+
+      if (shouldProduceConfetti && Math.random() < 0.4 * ticker.deltaTime) {
+        createConfetti(app);
+      }
+    });
+    confettiTickerAdded = true;
+  }
+
+  for (let i = 0; i < 75; i++) {
+    createConfetti(app);
+  }
+  shouldProduceConfetti = true;
+}
+
+function stopConfettiProduction() {
+  shouldProduceConfetti = false;
+}
 function addSignpost(sprite, text, scaleY) {
   const STROKE_WIDTH = 64;
   const TEXT_BACKGROUND_PADDING = 64;
@@ -352,7 +428,7 @@ function addSignpost(sprite, text, scaleY) {
   benSprite.animationSpeed = CHARACTER_ANIMATION_SPEED - 0.05;
   benSprite.play();
 
-  // Staging
+  app.stage.sortableChildren = true;
   app.stage.addChild(sky);
   for (const child of parallaxContainer.parallaxChildren()) {
     app.stage.addChild(child);
@@ -394,12 +470,12 @@ function addSignpost(sprite, text, scaleY) {
   let scrollFraction = 0;
   let scrollStopTimeoutId = null;
   let charactersAreWalking = false;
+  let confettiEffectStarted = false; // Flag to track if confetti has started
   // Force the layout and move everything into place.
   requestAnimationFrame(updateAnimation);
 
   function updateAnimation() {
     // Calculate raw scroll change
-    const rawDeltaY = window.scrollY - currentScrollY;
     currentScrollY = window.scrollY;
 
     // Calculate animation-relevant scroll position
@@ -413,14 +489,27 @@ function addSignpost(sprite, text, scaleY) {
     scrollFraction =
       newAnimationScrollY > 0 ? newAnimationScrollY / animationScrollLength : 0;
 
-    // Update character position/animation based on scroll progress (basic example)
-    // For a walk cycle, you would change sprite frames here
-    // character.y = (app.screen.height / 2 - character.height / 2) + (scrollProgress * 50); // Example: move character down slightly
     foreground.tilePosition.x -= animationDeltaY * FOREGROUND_LAYER_FACTOR;
     sky.tilePosition.x -= animationDeltaY * SKY_LAYER_FACTOR;
-    // formal1Sprite.x -= animationDeltaY * IMAGE_LAYER_FACTOR;
-    parallaxContainer.moveX(-animationDeltaY); // Use animationDeltaY here
-    //chicago.x -= animationDeltaY * IMAGE_LAYER_FACTOR;
+    parallaxContainer.moveX(-animationDeltaY);
+
+    const atEndOfScroll =
+      currentScrollY + window.innerHeight >=
+      document.documentElement.scrollHeight - 5; // 5px tolerance
+
+    if (atEndOfScroll) {
+      if (!confettiEffectStarted) {
+        console.log("Starting confetti effect");
+        startConfettiEffect(app);
+        confettiEffectStarted = true;
+      }
+    } else {
+      if (confettiEffectStarted) {
+        console.log("Stopping confetti production");
+        stopConfettiProduction();
+        confettiEffectStarted = false;
+      }
+    }
   }
   window.addEventListener("scroll", () => {
     clearTimeout(scrollStopTimeoutId);
