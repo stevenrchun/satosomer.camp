@@ -204,7 +204,6 @@ function addSignpost(sprite, text, scaleY) {
   const preambleHeight = document.getElementById("preamble").clientHeight;
   const transitionHeight =
     document.getElementById("transition-id").clientHeight;
-  const INITIAL_SCROLL_OFFSET = transitionHeight + preambleHeight;
   // FOREGROUND_LAYER_FACTOR is also the "world" base parallax scroll. Really it's not a parallax factor, but a ratio of how many vertical pixels should translate to horizontal scrolls.
   const FOREGROUND_LAYER_FACTOR = 0.3;
   const CHICAGO_LAYER_FACTOR = 0.2;
@@ -212,22 +211,34 @@ function addSignpost(sprite, text, scaleY) {
   const IMAGE_LAYER_FACTOR = 0.25;
   const SKY_LAYER_FACTOR = 0.02;
 
+  // Define a consistent ground level for all sprites
+  const GROUND_LEVEL_Y = app.screen.height * 0.87; // Adjust this percentage as needed
+  // This is the pixel distance from the top of the 'grassy-0' texture to its visual ground.
+  // You will need to adjust this value to align the foreground's visual ground with GROUND_LEVEL_Y.
+  const FOREGROUND_VISUAL_GROUND_OFFSET = 127; // Initial guess, adjust as needed
+
   // Set initial positions
-  foreground.y = 30;
-  chicago.y = -90;
+  // Position foreground based on its visual ground
+  foreground.y =
+    GROUND_LEVEL_Y - FOREGROUND_VISUAL_GROUND_OFFSET * foreground.tileScale.y;
+
+  // Position other sprites relative to GROUND_LEVEL_Y based on their anchors
+  chicago.y = GROUND_LEVEL_Y - chicago.height; // Assuming anchor (0,0)
   chicago.x = app.screen.width + pixelDistance(100, app);
-  paintedLadies.y = -100;
+
+  paintedLadies.y = GROUND_LEVEL_Y - paintedLadies.height; // Assuming anchor (0,0)
   paintedLadies.x = app.screen.width + pixelDistance(600, app);
+
   weber.x = app.screen.width;
-  weber.y = app.screen.height * 0.45;
+  weber.y = GROUND_LEVEL_Y - weber.height; // Assuming anchor (0,0)
+
   deering.x = app.screen.width + pixelDistance(40, app);
-  deering.y = app.screen.height * 0.35;
-  tower.anchor.set(0.5, 0);
-  eiffelBushes.anchor.set(0.5, 0);
-  tower.y = -100;
-  eiffelBushes.y = -110;
-  tower.y = -100;
-  eiffelBushes.y = -110;
+  deering.y = GROUND_LEVEL_Y - deering.height; // Assuming anchor (0,0)
+
+  tower.anchor.set(0.5, 0); // Anchor set to center-top
+  eiffelBushes.anchor.set(0.5, 0); // Anchor set to center-top
+  tower.y = GROUND_LEVEL_Y - tower.height;
+  eiffelBushes.y = GROUND_LEVEL_Y - eiffelBushes.height;
 
   // Define the initial x-position for the Eiffel Tower group
   // This is the "placement in the scene" that the user wants to maintain
@@ -245,10 +256,12 @@ function addSignpost(sprite, text, scaleY) {
   eiffelBushes.x =
     app.screen.width / 2 +
     scrollYForEiffelCenter * (CHICAGO_LAYER_FACTOR + 0.02);
+
   hayesHouse.x = app.screen.width + pixelDistance(1280, app);
-  hayesHouse.y = app.screen.height * 0.23;
+  hayesHouse.y = GROUND_LEVEL_Y - hayesHouse.height; // Assuming anchor (0,0)
+
   perg.x = app.screen.width + pixelDistance(1550, app);
-  perg.y = app.screen.height * 0.45;
+  perg.y = GROUND_LEVEL_Y - perg.height + 60; // Assuming anchor (0,0)
 
   // Parallax Staging
   parallaxContainer.addParallaxChild(
@@ -279,7 +292,7 @@ function addSignpost(sprite, text, scaleY) {
   const imgParallaxSprites = imgSprites.map((spriteAndLabel, index) => {
     let sprite = spriteAndLabel[0];
     let label = spriteAndLabel[1];
-    sprite.anchor.set(0.5);
+    sprite.anchor.set(0.5); // Anchor set to center
     // Split based on vert or horizontal photos.
     let scale = null;
     scale = setScaleRelativeToViewHeightOrMaxWidth(0.4, sprite, app);
@@ -310,8 +323,14 @@ function addSignpost(sprite, text, scaleY) {
 
   // Character Positions
   const CHARACTER_ANIMATION_SPEED = 0.2;
-  rachelSprite.anchor.set(0, 1);
-  rachelSprite.y = app.screen.height * 0.97;
+  const CHARACTER_FOREGROUND_VISUAL_OFFSET = 145;
+  rachelSprite.anchor.set(0, 1); // Anchor set to bottom-left
+  // Anchor characters to the foreground.
+  rachelSprite.y =
+    GROUND_LEVEL_Y -
+    FOREGROUND_VISUAL_GROUND_OFFSET * foreground.tileScale.y +
+    CHARACTER_FOREGROUND_VISUAL_OFFSET * foreground.tileScale.y +
+    20;
   rachelSprite.x = app.screen.width * 0.08;
   if (app.screen.height > app.screen.width) {
     rachelSprite.x = app.screen.width * 0.03;
@@ -319,12 +338,17 @@ function addSignpost(sprite, text, scaleY) {
   rachelSprite.animationSpeed = CHARACTER_ANIMATION_SPEED;
   rachelSprite.play();
 
-  benSprite.anchor.set(0, 1);
-  benSprite.y = app.screen.height * 0.95;
+  benSprite.anchor.set(0, 1); // Anchor set to bottom-left
+  benSprite.y =
+    GROUND_LEVEL_Y -
+    FOREGROUND_VISUAL_GROUND_OFFSET * foreground.tileScale.y +
+    CHARACTER_FOREGROUND_VISUAL_OFFSET * foreground.tileScale.y;
   benSprite.x = app.screen.width * 0.12;
   if (app.screen.height > app.screen.width) {
     benSprite.x = app.screen.width * 0.2;
   }
+  benSprite.animationSpeed = CHARACTER_ANIMATION_SPEED - 0.05;
+  benSprite.play();
   benSprite.animationSpeed = CHARACTER_ANIMATION_SPEED - 0.05;
   benSprite.play();
 
