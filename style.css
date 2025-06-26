@@ -147,7 +147,7 @@ body {
 
 
 .hero-img {
-  max-width: 400px;
+  max-width: 300px;
   height: auto;
   border-radius: 280px;
   margin-right: 25px;
@@ -236,7 +236,7 @@ body {
 
 .down-arrow {
   margin: 0;
-  color: black;
+  color: white;
   font-size: 32px;
 }
 
@@ -254,7 +254,7 @@ body {
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1002px) {
   .hero-container {
     flex-direction: column;
   }
