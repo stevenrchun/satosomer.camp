@@ -215,7 +215,7 @@ function addSignpost(sprite, text, scaleY) {
   const GROUND_LEVEL_Y = app.screen.height * 0.87; // Adjust this percentage as needed
   // This is the pixel distance from the top of the 'grassy-0' texture to its visual ground.
   // You will need to adjust this value to align the foreground's visual ground with GROUND_LEVEL_Y.
-  const FOREGROUND_VISUAL_GROUND_OFFSET = 127; // Initial guess, adjust as needed
+  const FOREGROUND_VISUAL_GROUND_OFFSET = 129; // Initial guess, adjust as needed
 
   // Set initial positions
   // Position foreground based on its visual ground
