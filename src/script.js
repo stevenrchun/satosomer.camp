@@ -215,24 +215,39 @@ function addSignpost(sprite, text, scaleY) {
   // Set initial positions
   foreground.y = 30;
   chicago.y = -90;
-  chicago.x = INITIAL_SCROLL_OFFSET + pixelDistance(100, app);
+  chicago.x = app.screen.width + pixelDistance(100, app);
   paintedLadies.y = -100;
-  paintedLadies.x = INITIAL_SCROLL_OFFSET + pixelDistance(600, app);
-  weber.x = INITIAL_SCROLL_OFFSET;
+  paintedLadies.x = app.screen.width + pixelDistance(600, app);
+  weber.x = app.screen.width;
   weber.y = app.screen.height * 0.45;
-  deering.x = INITIAL_SCROLL_OFFSET + pixelDistance(40, app);
+  deering.x = app.screen.width + pixelDistance(40, app);
   deering.y = app.screen.height * 0.35;
+  tower.anchor.set(0.5, 0);
+  eiffelBushes.anchor.set(0.5, 0);
   tower.y = -100;
   eiffelBushes.y = -110;
-  tower.x = INITIAL_SCROLL_OFFSET + pixelDistance(1060, app);
+  tower.y = -100;
+  eiffelBushes.y = -110;
+
+  // Define the initial x-position for the Eiffel Tower group
+  // This is the "placement in the scene" that the user wants to maintain
+  const eiffelGroupInitialX = app.screen.width + pixelDistance(1180, app);
+
+  // Set tower's initial x-position
+  tower.x = eiffelGroupInitialX;
+
+  // Calculate the animationScrollY at which the tower will be centered
+  // This is the scroll point where the Eiffel Tower group should align
+  const scrollYForEiffelCenter =
+    (eiffelGroupInitialX - app.screen.width / 2) / CHICAGO_LAYER_FACTOR;
+
+  // Calculate eiffelBushes' initial x-position so it also centers at scrollYForEiffelCenter
   eiffelBushes.x =
-    INITIAL_SCROLL_OFFSET +
-    pixelDistance(1060, app) +
-    (INITIAL_SCROLL_OFFSET + pixelDistance(1060, app)) * 0.02 +
-    550;
-  hayesHouse.x = INITIAL_SCROLL_OFFSET + pixelDistance(1280, app);
+    app.screen.width / 2 +
+    scrollYForEiffelCenter * (CHICAGO_LAYER_FACTOR + 0.02);
+  hayesHouse.x = app.screen.width + pixelDistance(1280, app);
   hayesHouse.y = app.screen.height * 0.23;
-  perg.x = INITIAL_SCROLL_OFFSET + pixelDistance(1550, app);
+  perg.x = app.screen.width + pixelDistance(1550, app);
   perg.y = app.screen.height * 0.45;
 
   // Parallax Staging
@@ -268,7 +283,7 @@ function addSignpost(sprite, text, scaleY) {
     // Split based on vert or horizontal photos.
     let scale = null;
     scale = setScaleRelativeToViewHeightOrMaxWidth(0.4, sprite, app);
-    sprite.x = (index + 1) * pixelDistance(180, app) + INITIAL_SCROLL_OFFSET;
+    sprite.x = (index + 1) * pixelDistance(180, app) + app.screen.width;
     sprite.y = app.screen.height / 2.7;
 
     const parallaxSprite = new ParallaxSprite(sprite, IMAGE_LAYER_FACTOR);
