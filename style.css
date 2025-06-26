@@ -315,14 +315,7 @@ body {
   width: 100%;
   height: 100vh;
   pointer-events: none;
-  /* aspect-ratio: 16 / 9; */
 }
-
-.scroll-buffer {
-  /* height: 51000px; */
-  /* height: 3200vw; */
-}
-
 
 @media only screen and (max-width: 702px) {
   .hero-txt {
@@ -340,44 +333,6 @@ body {
     align-items: center;
   }
 }
-
-@media (max-aspect-ratio: 3/2) {
-  .scroll-buffer {
-    /* height: 3800vw; */
-  }
-}
-
-/* @media (max-aspect-ratio: 16/10) { */
-/*   .scroll-buffer { */
-/*     height: 48500px; */
-/*   } */
-/* } */
-
-
-@media (max-aspect-ratio: 4/3) {
-  .scroll-buffer {
-    /* height: 5000vw; */
-  }
-}
-
-@media (max-aspect-ratio: 3/4) {
-  .scroll-buffer {
-    /* height: 5925vh; */
-  }
-}
-
-@media (max-aspect-ratio: 9/16) {
-  .scroll-buffer {
-    /* height: 6550vh; */
-  }
-}
-
-/* @media only screen and (max-width: 430px) { */
-/*   .scroll-buffer { */
-/*     height: 51500px; */
-/*   } */
-/* } */
-
 
 @media only screen and (max-width: 425px) {
   .hero-txt {
