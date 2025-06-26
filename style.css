@@ -320,7 +320,7 @@ body {
 
 .scroll-buffer {
   /* height: 51000px; */
-  height: 3200vw;
+  /* height: 3200vw; */
 }
 
 
@@ -343,7 +343,7 @@ body {
 
 @media (max-aspect-ratio: 3/2) {
   .scroll-buffer {
-    height: 3800vw;
+    /* height: 3800vw; */
   }
 }
 
@@ -356,19 +356,19 @@ body {
 
 @media (max-aspect-ratio: 4/3) {
   .scroll-buffer {
-    height: 5000vw;
+    /* height: 5000vw; */
   }
 }
 
 @media (max-aspect-ratio: 3/4) {
   .scroll-buffer {
-    height: 5925vh;
+    /* height: 5925vh; */
   }
 }
 
 @media (max-aspect-ratio: 9/16) {
   .scroll-buffer {
-    height: 6550vh;
+    /* height: 6550vh; */
   }
 }
 

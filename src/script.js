@@ -198,7 +198,13 @@ function addSignpost(sprite, text, scaleY) {
   // how far along x you have to be to be roughly in the right of the frame after the initial scrolling.
   // At least for images..
   // Screen size dependent.
-  const INITIAL_SCROLL_OFFSET = app.screen.height * 2;
+  const documentLength =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
+  const preambleHeight = document.getElementById("preamble").clientHeight;
+  const transitionHeight =
+    document.getElementById("transition-id").clientHeight;
+  const INITIAL_SCROLL_OFFSET = transitionHeight + preambleHeight;
   // FOREGROUND_LAYER_FACTOR is also the "world" base parallax scroll. Really it's not a parallax factor, but a ratio of how many vertical pixels should translate to horizontal scrolls.
   const FOREGROUND_LAYER_FACTOR = 0.3;
   const CHICAGO_LAYER_FACTOR = 0.2;
@@ -270,6 +276,22 @@ function addSignpost(sprite, text, scaleY) {
     addSignpost(sprite, label, scale);
     return parallaxSprite;
   });
+  let finalSprite = imgParallaxSprites.slice(-1)[0].sprite;
+
+  // In your script, after sprite layout is complete
+  const goodbyeSprite = imgParallaxSprites.slice(-1)[0].sprite; // Get the actual sprite
+  const initialX = finalSprite.x;
+  const targetX = app.screen.width / 2;
+  const horizontalDistanceToTravel = initialX - targetX;
+
+  const totalScrollDistance = horizontalDistanceToTravel / IMAGE_LAYER_FACTOR;
+
+  // Set the height of the buffer element
+  const scrollBuffer = document.getElementById("scroll-buffer");
+  scrollBuffer.style.height = `${totalScrollDistance}px`;
+
+  // Now you can calculate your animationScrollLength based on this
+  // instead of the total document height.
 
   // Character Positions
   const CHARACTER_ANIMATION_SPEED = 0.2;
@@ -306,67 +328,60 @@ function addSignpost(sprite, text, scaleY) {
   // While `resizeTo: container` handles the canvas itself, we need to manually
   // update the dimensions of our scene elements (like TilingSprites) and
   // reposition sprites (like the bunny) when the logical screen size changes.
-  function handleResize() {
-    // Update TilingSprite dimensions to fill the new logical screen size.
-    foreground.width = app.screen.width;
-    foreground.height = app.screen.height;
-    sky.width = app.screen.width;
-    sky.height = app.screen.height;
+  //function handleResize() {
+  //  // Update TilingSprite dimensions to fill the new logical screen size.
+  //  foreground.width = app.screen.width;
+  //  foreground.height = app.screen.height;
+  //  sky.width = app.screen.width;
+  //  sky.height = app.screen.height;
 
-    // Re-calculate the animation scroll length, as the document layout might change on resize.
-    //updateAnimationScrollLength();
-    // Also, immediately update the animation state to reflect the new layout.
-    updateAnimation();
-  }
+  //  // Re-calculate the animation scroll length, as the document layout might change on resize.
+  //  //updateAnimationScrollLength();
+  //  // Also, immediately update the animation state to reflect the new layout.
+  //  updateAnimation();
+  //}
 
-  // Attach the `handleResize` function to the PixiJS renderer's 'resize' event.
-  // This event fires whenever the canvas dimensions change (e.g., when the browser window is resized).
-  app.renderer.on("resize", handleResize);
+  //// Attach the `handleResize` function to the PixiJS renderer's 'resize' event.
+  //// This event fires whenever the canvas dimensions change (e.g., when the browser window is resized).
+  //app.renderer.on("resize", handleResize);
 
   // Animation logic
-  const documentLength =
-    document.documentElement.scrollHeight -
-    document.documentElement.clientHeight;
-  const preambleHeight = document.getElementById("preamble").clientHeight;
-  const animationScrollLength = documentLength - preambleHeight;
+  const animationScrollLength =
+    documentLength - preambleHeight - transitionHeight;
 
   let currentScrollY = 0;
-  let animationScrollY =
-    currentScrollY - preambleHeight > 0 ? currentScrollY - preambleHeight : 0;
+  let animationScrollY = 0; // This will be the effective scroll for animation
+  let prevAnimationScrollY = 0; // Keep track of the previous animation scroll position
   let scrollFraction = 0;
-  let deltaY = 0;
   let scrollStopTimeoutId = null;
   let charactersAreWalking = false;
   // Force the layout and move everything into place.
   requestAnimationFrame(updateAnimation);
 
   function updateAnimation() {
-    // Calculate scroll progress (0 to 1)
-    deltaY = window.scrollY - currentScrollY;
+    // Calculate raw scroll change
+    const rawDeltaY = window.scrollY - currentScrollY;
     currentScrollY = window.scrollY;
-    animationScrollY =
-      currentScrollY - preambleHeight > 0 ? currentScrollY - preambleHeight : 0;
-    scrollFraction =
-      animationScrollY > 0 ? animationScrollY / animationScrollLength : 0;
 
-    // If Ben has reached the last image, zero out any positive deltaYs.
-    // We must use global positions to compare.
-    // if (
-    //   benSprite.getGlobalPosition().x >=
-    //   imgParallaxSprites.slice(-1)[0].getGlobalPosition().x
-    // ) {
-    //   if (deltaY > 0) {
-    //     deltaY = 0;
-    //   }
-    // }
+    // Calculate animation-relevant scroll position
+    const newAnimationScrollY = Math.max(
+      0,
+      currentScrollY - preambleHeight - transitionHeight,
+    );
+    const animationDeltaY = newAnimationScrollY - prevAnimationScrollY;
+    prevAnimationScrollY = newAnimationScrollY;
+
+    scrollFraction =
+      newAnimationScrollY > 0 ? newAnimationScrollY / animationScrollLength : 0;
+
     // Update character position/animation based on scroll progress (basic example)
     // For a walk cycle, you would change sprite frames here
     // character.y = (app.screen.height / 2 - character.height / 2) + (scrollProgress * 50); // Example: move character down slightly
-    foreground.tilePosition.x -= deltaY * FOREGROUND_LAYER_FACTOR;
-    sky.tilePosition.x -= deltaY * SKY_LAYER_FACTOR;
-    // formal1Sprite.x -= deltaY * IMAGE_LAYER_FACTOR;
-    parallaxContainer.moveX(-deltaY);
-    //chicago.x -= deltaY * IMAGE_LAYER_FACTOR;
+    foreground.tilePosition.x -= animationDeltaY * FOREGROUND_LAYER_FACTOR;
+    sky.tilePosition.x -= animationDeltaY * SKY_LAYER_FACTOR;
+    // formal1Sprite.x -= animationDeltaY * IMAGE_LAYER_FACTOR;
+    parallaxContainer.moveX(-animationDeltaY); // Use animationDeltaY here
+    //chicago.x -= animationDeltaY * IMAGE_LAYER_FACTOR;
   }
   window.addEventListener("scroll", () => {
     clearTimeout(scrollStopTimeoutId);

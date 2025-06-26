@@ -43,9 +43,9 @@ export class ParallaxSprite extends Container {
   constructor(sprite, parallaxFactor = 1) {
     super();
     this._parallaxFactor = parallaxFactor;
-    this._sprite = sprite;
+    this.sprite = sprite;
     if (sprite) {
-      this.addChild(this._sprite);
+      this.addChild(this.sprite);
     }
   }
   moveParallaxSpriteX(deltaX) {
