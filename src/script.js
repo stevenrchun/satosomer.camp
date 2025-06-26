@@ -225,7 +225,7 @@ function addSignpost(sprite, text, scaleY) {
       camp2,
       "They go on a few adventures (including Ben’s first camping trip).",
     ],
-    [bus3, "They share a lot of laughs and made a lot of good memz."],
+    [bus3, "They share a lot of laughs and make lots of good memz."],
     [grad4, "In 2019, Ben graduates and moves to San Francsico."],
     [
       grad5,
@@ -234,13 +234,13 @@ function addSignpost(sprite, text, scaleY) {
     [park6, "Lots of good park hangs during the Pandemic."],
     [
       hayes7,
-      "2021: Ben and Rachel moves into the Hayes House with 7 other friends. Chaos and lifelong friendships ensue. ",
+      "2021: Ben and Rachel move into the Hayes House with 7 other friends. Chaos and lifelong friendships ensue. ",
     ],
     [
       europe,
       "2022: The couple travel through Europe for 3 months, London, Paris, Barcelona.",
     ],
-    [hayesformal8, "The Era of Hayes House comes to a close."],
+    [hayesformal8, "The Era of the Hayes House comes to a close."],
     [
       mattress9,
       "Late 2023, Ben and Rachel move in together, carrying their mattress across Alamo Square.",
@@ -255,7 +255,7 @@ function addSignpost(sprite, text, scaleY) {
     ],
     [
       goodbye11,
-      "We’re so excited to celebrate with you all at Sato Somer Camp <3",
+      "JUST THE START: We’re so excited to celebrate with you all at Sato Somer Camp <3",
     ],
   ];
 
