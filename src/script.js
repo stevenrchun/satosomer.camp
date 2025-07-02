@@ -251,7 +251,7 @@ function addSignpost(sprite, text, scaleY) {
     ],
     [
       proposal11,
-      "In December of 2023, the Perg Prosposal happens. It's a perfect moment in the new home captured by a few sneaky hidden cameras.",
+      "In December of 2023, the Perg Proposal happens. It's a perfect moment in the new home captured by a few sneaky hidden cameras.",
     ],
     [
       goodbye11,
