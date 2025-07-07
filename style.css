@@ -213,6 +213,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  text-align: center;
   /* transform: translate(0, 40%); */
   /* margin-bottom: 50px; */
 }
