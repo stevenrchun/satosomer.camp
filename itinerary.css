@@ -91,6 +91,24 @@
   width: 300px;
   transform: translate(280px, 250px) rotate(-3deg);
 }
+.paris {
+  top: 0;
+  left: 0;
+  width: 400px;
+  transform: translate(-280px, 333px) rotate(3deg);
+}
+.whoa {
+  top: 0;
+  left: 0;
+  width: 400px;
+  transform: translate(-380px, 333px) rotate(3deg);
+}
+.waterfall {
+  top: 0;
+  right: 0;
+  width: 300px;
+  transform: translate(300px, 250px) rotate(3deg);
+}
 
 
 .itinerary-1 {
@@ -142,6 +160,12 @@
 @media only screen and (max-width: 1000px) {
   .itinerary-card-photo-container {
     width: 70%;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .itinerary-card-photo-container {
+    width: 90%;
   }
 
 }
